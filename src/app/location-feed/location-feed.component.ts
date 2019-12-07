@@ -32,6 +32,7 @@ export class LocationFeedComponent implements OnInit {
   userLatitude: number = 0;
   userCity: string = '';
   userTimeZone: string = '';
+  userGMTOffset: string = '';
 
   populateResult() {
     this.userLatitude = this.coordinateForm.controls['latitudeInput'].value;
@@ -43,6 +44,8 @@ export class LocationFeedComponent implements OnInit {
           this.userCity = currentLocation.countryName;
           this.userTimeZone = currentLocation.abbreviation;
           this.userTime = currentLocation.formatted;
+          this.userGMTOffset = this.calculateGMTTimezone(
+            currentLocation.gmtOffset);
           this.isSuccessful = true;
         }
         else if (response.status == this.TIMEZONEDB_FAIL_STATUS) {
@@ -84,9 +87,26 @@ export class LocationFeedComponent implements OnInit {
     });
   }
 
+  calculateGMTTimezone(offset: number) : string {
+    let GMTTimezone = "";
+    if (offset) {
+      var gmtOffsetValue = offset / 3600;
+      if (gmtOffsetValue > 0) {
+        GMTTimezone = "(GMT+" + gmtOffsetValue.toString() + ")"; 
+      }
+      else if (gmtOffsetValue < 0) {
+        GMTTimezone = "(GMT-" + gmtOffsetValue.toString() + ")"; 
+      }
+      else if (gmtOffsetValue == 0) {
+        GMTTimezone = "(GMT0)"
+      }
+    }
+    return GMTTimezone;
+  }
+
   getUserLocation(latitude: number, longitude:number): Observable<UserLocation>
   {
-    let TIMEZONEDB_API_KEY = "YOUR_API_HERE";
+    let TIMEZONEDB_API_KEY = "U5BLU4ZHAL0P";
     let timezoneDBUrl = "https://api.timezonedb.com/v2.1/get-time-zone?key="
       + TIMEZONEDB_API_KEY + "&format=json&by=position&lat=" + latitude + 
       "&lng=" + longitude;
