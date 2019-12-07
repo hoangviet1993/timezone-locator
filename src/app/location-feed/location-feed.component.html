@@ -1,0 +1,53 @@
+<form [formGroup]="coordinateForm"
+      class="locator-form">
+  <mat-form-field class="locator-input-field">
+    <input type="text"
+           formControlName="latitudeInput"
+           matInput
+           placeholder="Latitude">
+    <mat-error *ngIf="coordinateForm.get('latitudeInput').hasError('required')">
+      Latitude cannot be empty.
+    </mat-error>
+    <mat-error *ngIf="coordinateForm.get('latitudeInput').hasError('min')">
+      Latitude cannot be smaller than -90 degree.
+    </mat-error>
+    <mat-error *ngIf="coordinateForm.get('latitudeInput').hasError('max')">
+      Latitude cannot be bigger than 90 degree.
+    </mat-error>
+  </mat-form-field> 
+  <mat-form-field class="locator-input-field">
+    <input type="text"
+           formControlName="longitudeInput"
+           matInput
+           placeholder="Longitude">
+    <mat-error *ngIf="coordinateForm.get('longitudeInput').hasError('required')">
+      Longitude cannot be empty.
+    </mat-error>
+    <mat-error *ngIf="coordinateForm.get('longitudeInput').hasError('min')">
+      Longitude cannot be smaller than -180 degree.
+    </mat-error>
+    <mat-error *ngIf="coordinateForm.get('longitudeInput').hasError('max')">
+      Longitude cannot be bigger than 180 degree.
+    </mat-error>
+  </mat-form-field>
+  <button type="submit"
+          mat-raised-button color="primary"
+          class="locator-submit-button"
+          (click)="onClick()"
+          [disabled]="!isClickable || coordinateForm.invalid">
+    Get Current Time
+  </button>
+  <p *ngIf="isSuccessful">
+    Current time at {{ userCity }} is <br> {{ userTime | date:'fullDate' }},
+    {{ userTime | date:'mediumTime' }}, {{ userTimeZone }}
+  </p>
+  <p *ngIf="isInvalidCoordinate">
+    Could not locate a geographic location at 
+    ({{ userLatitude }}, {{ userLongitude }})
+  </p>
+  <p *ngIf="isNoRecord">
+    No record could be found for geographic coordinate
+    ({{ userLatitude }}, {{ userLongitude }})
+  </p>
+</form>
+
