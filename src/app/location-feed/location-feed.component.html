@@ -41,6 +41,7 @@
     Current time at {{ userCity }} is <br>
     {{ userTime | convertDateObject | date:'fullDate' }},
     {{ userTime | convertDateObject | date:'h:mm:ss a' }} {{ userGMTOffset }}
+    , {{ userTimeZone }}
   </p>
   <p *ngIf="isInvalidCoordinate">
     Could not locate a geographic location at 
