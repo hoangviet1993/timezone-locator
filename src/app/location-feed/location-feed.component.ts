@@ -27,7 +27,7 @@ export class LocationFeedComponent implements OnInit {
   isInvalidCoordinate: boolean = false;
   isNoRecord: boolean = false;
 
-  userTime: Date;
+  userTime: string;
   userLongitude: number = 0;
   userLatitude: number = 0;
   userCity: string = '';
