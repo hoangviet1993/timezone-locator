@@ -38,8 +38,9 @@
     Get Current Time
   </button>
   <p *ngIf="isSuccessful">
-    Current time at {{ userCity }} is <br> {{ userTime | date:'fullDate' }},
-    {{ userTime | date:'mediumTime' }}, {{ userTimeZone }}
+    Current time at {{ userCity }} is <br>
+    {{ userTime | convertDateObject | date:'fullDate' }},
+    {{ userTime | convertDateObject | date:'h:mm:ss a' }} {{ userGMTOffset }}
   </p>
   <p *ngIf="isInvalidCoordinate">
     Could not locate a geographic location at 

@@ -12,11 +12,13 @@ import { MatButtonModule,
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LocationFeedComponent } from './location-feed/location-feed.component';
+import { ConvertDateObjectPipe } from './convert-date-object.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LocationFeedComponent
+    LocationFeedComponent,
+    ConvertDateObjectPipe
   ],
   imports: [
     BrowserModule,
