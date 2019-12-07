@@ -106,7 +106,7 @@ export class LocationFeedComponent implements OnInit {
 
   getUserLocation(latitude: number, longitude:number): Observable<UserLocation>
   {
-    let TIMEZONEDB_API_KEY = "U5BLU4ZHAL0P";
+    let TIMEZONEDB_API_KEY = "YOUR_API_HERE";
     let timezoneDBUrl = "https://api.timezonedb.com/v2.1/get-time-zone?key="
       + TIMEZONEDB_API_KEY + "&format=json&by=position&lat=" + latitude + 
       "&lng=" + longitude;
