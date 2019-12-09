@@ -12,13 +12,13 @@ import { MatButtonModule,
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LocationFeedComponent } from './location-feed/location-feed.component';
-import { ConvertDateObjectPipe } from './convert-date-object.pipe';
+import { ConvertStringToDateObjectPipe } from './convert-string-to-date-object.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LocationFeedComponent,
-    ConvertDateObjectPipe
+    ConvertStringToDateObjectPipe
   ],
   imports: [
     BrowserModule,
@@ -38,7 +38,9 @@ import { ConvertDateObjectPipe } from './convert-date-object.pipe';
     MatInputModule,
     MatRippleModule,
   ],
-  providers: [],
+  providers: [
+    ConvertStringToDateObjectPipe,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
