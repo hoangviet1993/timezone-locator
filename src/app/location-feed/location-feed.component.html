@@ -39,8 +39,8 @@
   </button>
   <p *ngIf="isSuccessful">
     Current time at {{ userCity }} is <br>
-    {{ userTime | convertDateObject | date:'fullDate' }},
-    {{ userTime | convertDateObject | date:'h:mm:ss a' }} {{ userGMTOffset }}
+    {{ userTime | date:'fullDate' }},
+    {{ userTime | date:'h:mm:ss a' }} {{ userGMTOffset }}
     , {{ userTimeZone }}
   </p>
   <p *ngIf="isInvalidCoordinate">
