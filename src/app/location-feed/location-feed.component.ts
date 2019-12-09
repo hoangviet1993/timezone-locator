@@ -1,10 +1,12 @@
 import { Component, OnInit} from '@angular/core';
 import { HttpClient} from "@angular/common/http";
-import { FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
 import { UserLocation } from '../user-location.model';
+import { ConvertStringToDateObjectPipe } 
+  from '../convert-string-to-date-object.pipe';
 
 @Component({
   selector: 'app-location-feed',
@@ -27,7 +29,7 @@ export class LocationFeedComponent implements OnInit {
   isInvalidCoordinate: boolean = false;
   isNoRecord: boolean = false;
 
-  userTime: string;
+  userTime: Date;
   userLongitude: number = 0;
   userLatitude: number = 0;
   userCity: string = '';
@@ -43,7 +45,7 @@ export class LocationFeedComponent implements OnInit {
           var currentLocation = response;
           this.userCity = currentLocation.countryName;
           this.userTimeZone = currentLocation.abbreviation;
-          this.userTime = currentLocation.formatted;
+          this.userTime = this.datePipe.transform(currentLocation.formatted);
           this.userGMTOffset = this.calculateGMTTimezone(
             currentLocation.gmtOffset);
           this.isSuccessful = true;
@@ -76,7 +78,11 @@ export class LocationFeedComponent implements OnInit {
     // TimezoneDB enforce a rate limit of 1 query/s.
   }
 
-  constructor(private http: HttpClient, private formbuilder: FormBuilder) {}
+  constructor(
+    private http: HttpClient,
+    private formbuilder: FormBuilder,
+    private datePipe: ConvertStringToDateObjectPipe
+  ) {}
 
   ngOnInit() {
     this.coordinateForm = this.formbuilder.group({
