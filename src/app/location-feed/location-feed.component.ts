@@ -11,7 +11,8 @@ import { ConvertStringToDateObjectPipe }
 @Component({
   selector: 'app-location-feed',
   templateUrl: './location-feed.component.html',
-  styleUrls: ['./location-feed.component.scss']
+  styleUrls: ['./location-feed.component.scss'],
+  providers: [ConvertStringToDateObjectPipe]
 })
 
 export class LocationFeedComponent implements OnInit {
