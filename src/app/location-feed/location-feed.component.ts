@@ -1,10 +1,7 @@
 import { Component, OnInit} from '@angular/core';
-import { HttpClient} from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
 
-import { UserLocation } from '../user-location.model';
+import { UserLocationService } from '../user-location.service';
 import { ConvertStringToDateObjectPipe } 
   from '../convert-string-to-date-object.pipe';
 
@@ -12,7 +9,7 @@ import { ConvertStringToDateObjectPipe }
   selector: 'app-location-feed',
   templateUrl: './location-feed.component.html',
   styleUrls: ['./location-feed.component.scss'],
-  providers: [ConvertStringToDateObjectPipe]
+  providers: [ConvertStringToDateObjectPipe, UserLocationService]
 })
 
 export class LocationFeedComponent implements OnInit {
@@ -40,7 +37,8 @@ export class LocationFeedComponent implements OnInit {
   populateResult() {
     this.userLatitude = this.coordinateForm.controls['latitudeInput'].value;
     this.userLongitude = this.coordinateForm.controls['longitudeInput'].value;
-    this.getUserLocation(this.userLatitude, this.userLongitude).subscribe(
+    this.locationService.getUserLocation(
+      this.userLatitude, this.userLongitude).subscribe(
       (response) => {
         if (response.status == this.TIMEZONEDB_SUCCESS_STATUS) {
           var currentLocation = response;
@@ -80,9 +78,9 @@ export class LocationFeedComponent implements OnInit {
   }
 
   constructor(
-    private http: HttpClient,
     private formbuilder: FormBuilder,
-    private datePipe: ConvertStringToDateObjectPipe
+    private datePipe: ConvertStringToDateObjectPipe,
+    private locationService: UserLocationService
   ) {}
 
   ngOnInit() {
@@ -94,7 +92,7 @@ export class LocationFeedComponent implements OnInit {
     });
   }
 
-  calculateGMTTimezone(offset: number) : string {
+  private calculateGMTTimezone(offset: number) : string {
     let GMTTimezone = "";
     if (offset) {
       var gmtOffsetValue = offset / 3600;
@@ -110,32 +108,4 @@ export class LocationFeedComponent implements OnInit {
     }
     return GMTTimezone;
   }
-
-  getUserLocation(latitude: number, longitude:number): Observable<UserLocation>
-  {
-    let TIMEZONEDB_API_KEY = "YOUR_API_HERE";
-    let timezoneDBUrl = "https://api.timezonedb.com/v2.1/get-time-zone?key="
-      + TIMEZONEDB_API_KEY + "&format=json&by=position&lat=" + latitude + 
-      "&lng=" + longitude;
-    return this.http.get<UserLocation>(timezoneDBUrl)
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      );
-  }
-
-  handleError(error) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // client-side error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    // TODO: Need to log error with a back-end here
-    return throwError(errorMessage);
-  }
-  // Code snippet taken from 
-  // https://scotch.io/bar-talk/error-handling-with-angular-6-tips-and-best-practices192
 }
