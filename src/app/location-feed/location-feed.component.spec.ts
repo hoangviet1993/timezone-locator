@@ -9,8 +9,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LocationFeedComponent } from './location-feed.component';
-import { ConvertStringToDateObjectPipe } 
-  from '../convert-string-to-date-object.pipe';
+import { ConvertStringToDateObjectPipe
+} from '../convert-string-to-date-object.pipe';
 
 describe('LocationFeedComponent', () => {
   let component: LocationFeedComponent;

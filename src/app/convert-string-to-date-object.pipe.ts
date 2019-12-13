@@ -17,7 +17,7 @@ export class ConvertStringToDateObjectPipe implements PipeTransform {
     return null;
   }
 
-  isValidDate(value: string): boolean { 
+  isValidDate(value: string): boolean {
     return (!isNaN(Date.parse(value)));
   }
 }

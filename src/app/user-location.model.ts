@@ -1,5 +1,5 @@
 export class UserLocation {
-  constructor (
+  constructor(
     public abbreviation: string,
     public countryName: string,
     public formatted: string,
