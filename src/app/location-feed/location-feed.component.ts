@@ -1,9 +1,9 @@
 import { Component, OnInit} from '@angular/core';
-import { FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import { UserLocationService } from '../user-location.service';
-import { ConvertStringToDateObjectPipe } 
-  from '../convert-string-to-date-object.pipe';
+import { ConvertStringToDateObjectPipe
+} from '../convert-string-to-date-object.pipe';
 
 @Component({
   selector: 'app-location-feed',
@@ -13,48 +13,46 @@ import { ConvertStringToDateObjectPipe }
 })
 
 export class LocationFeedComponent implements OnInit {
-  private TIMEZONEDB_SUCCESS_STATUS = "OK";
-  private TIMEZONEDB_FAIL_STATUS = "FAILED"; 
-  private TIMEZONEDB_INVALID_LATITUDE_MESSAGE = "Invalid latitude value."
-  private TIMEZONEDB_INVALID_LONGITUDE_MESSAGE = "Invalid longitude value."
-  private TIMEZONEDB_NO_RECORD_MESSAGE = "Record not found."
-  //References from https://timezonedb.com/references/get-time-zone
+  private TIMEZONEDB_SUCCESS_STATUS = 'OK';
+  private TIMEZONEDB_FAIL_STATUS = 'FAILED';
+  private TIMEZONEDB_INVALID_LATITUDE_MESSAGE = 'Invalid latitude value.';
+  private TIMEZONEDB_INVALID_LONGITUDE_MESSAGE = 'Invalid longitude value.';
+  private TIMEZONEDB_NO_RECORD_MESSAGE = 'Record not found.';
+  // References from https://timezonedb.com/references/get-time-zone
 
   coordinateForm: FormGroup;
 
-  isClickable: boolean = true;
-  isSuccessful: boolean = false;
-  isInvalidCoordinate: boolean = false;
-  isNoRecord: boolean = false;
+  isClickable = true;
+  isSuccessful = false;
+  isInvalidCoordinate = false;
+  isNoRecord = false;
 
   userTime: Date;
-  userLongitude: number = 0;
-  userLatitude: number = 0;
-  userCity: string = '';
-  userTimeZone: string = '';
-  userGMTOffset: string = '';
+  userLongitude = 0;
+  userLatitude = 0;
+  userCity = '';
+  userTimeZone = '';
+  userGMTOffset = '';
 
   populateResult() {
-    this.userLatitude = this.coordinateForm.controls['latitudeInput'].value;
-    this.userLongitude = this.coordinateForm.controls['longitudeInput'].value;
+    this.userLatitude = this.coordinateForm.controls[`latitudeInput`].value;
+    this.userLongitude = this.coordinateForm.controls[`longitudeInput`].value;
     this.locationService.getUserLocation(
       this.userLatitude, this.userLongitude).subscribe(
       (response) => {
-        if (response.status == this.TIMEZONEDB_SUCCESS_STATUS) {
-          var currentLocation = response;
+        if (response.status === this.TIMEZONEDB_SUCCESS_STATUS) {
+          const currentLocation = response;
           this.userCity = currentLocation.countryName;
           this.userTimeZone = currentLocation.abbreviation;
           this.userTime = this.datePipe.transform(currentLocation.formatted);
           this.userGMTOffset = this.calculateGMTTimezone(
             currentLocation.gmtOffset);
           this.isSuccessful = true;
-        }
-        else if (response.status == this.TIMEZONEDB_FAIL_STATUS) {
-          if (response.message == this.TIMEZONEDB_INVALID_LATITUDE_MESSAGE ||
-            response.message == this.TIMEZONEDB_INVALID_LONGITUDE_MESSAGE) {
+        } else if (response.status === this.TIMEZONEDB_FAIL_STATUS) {
+          if (response.message === this.TIMEZONEDB_INVALID_LATITUDE_MESSAGE ||
+            response.message === this.TIMEZONEDB_INVALID_LONGITUDE_MESSAGE) {
             this.isInvalidCoordinate = true;
-          }
-          else if (response.message == this.TIMEZONEDB_NO_RECORD_MESSAGE) {
+          } else if (response.message === this.TIMEZONEDB_NO_RECORD_MESSAGE) {
             this.isNoRecord = true;
           }
         }
@@ -71,7 +69,7 @@ export class LocationFeedComponent implements OnInit {
     this.isInvalidCoordinate = false;
     this.isNoRecord = false;
     this.populateResult();
-    setTimeout(()=>{
+    setTimeout(() => {
       this.isClickable = true;
     }, 1500);
     // TimezoneDB enforce a rate limit of 1 query/s.
@@ -92,18 +90,16 @@ export class LocationFeedComponent implements OnInit {
     });
   }
 
-  private calculateGMTTimezone(offset: number) : string {
-    let GMTTimezone = "";
+  private calculateGMTTimezone(offset: number): string {
+    let GMTTimezone = '';
     if (offset) {
-      var gmtOffsetValue = offset / 3600;
+      const gmtOffsetValue = offset / 3600;
       if (gmtOffsetValue > 0) {
-        GMTTimezone = "(GMT+" + gmtOffsetValue.toString() + ")"; 
-      }
-      else if (gmtOffsetValue < 0) {
-        GMTTimezone = "(GMT-" + gmtOffsetValue.toString() + ")"; 
-      }
-      else if (gmtOffsetValue == 0) {
-        GMTTimezone = "(GMT0)"
+        GMTTimezone = '(GMT+' + gmtOffsetValue.toString() + ')';
+      } else if (gmtOffsetValue < 0) {
+        GMTTimezone = '(GMT-' + gmtOffsetValue.toString() + ')';
+      } else if (gmtOffsetValue === 0) {
+        GMTTimezone = '(GMT0)';
       }
     }
     return GMTTimezone;

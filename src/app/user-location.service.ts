@@ -14,9 +14,8 @@ export class UserLocationService {
   constructor(private http: HttpClient) { }
 
   public getUserLocation(
-    latitude: number, longitude:number): Observable<UserLocation>
-  {
-    let timezoneDBUrl = this.generateTimezoneDBUrl(latitude, longitude)
+    latitude: number, longitude: number): Observable<UserLocation> {
+    const timezoneDBUrl = this.generateTimezoneDBUrl(latitude, longitude);
     return this.http.get<UserLocation>(timezoneDBUrl)
       .pipe(
         retry(1),
@@ -36,13 +35,13 @@ export class UserLocationService {
     // TODO: Need to log error with a back-end here
     return throwError(errorMessage);
   }
-  // Code snippet taken from 
+  // Code snippet taken from
   // https://scotch.io/bar-talk/error-handling-with-angular-6-tips-and-best-practices192
 
 
-  public generateTimezoneDBUrl(latitude: number, longitude:number): string {
+  public generateTimezoneDBUrl(latitude: number, longitude: number): string {
     if (latitude && longitude) {
-      let timezoneDBUrl = environment.TIMEZONEDB_GET_TIME_ZONE_URL 
+      const timezoneDBUrl = environment.TIMEZONEDB_GET_TIME_ZONE_URL
         + '&lat=' + latitude + '&lng=' + longitude;
       return timezoneDBUrl;
     }

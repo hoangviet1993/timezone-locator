@@ -11,8 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { LocationFeedComponent } from './location-feed/location-feed.component';
-import { ConvertStringToDateObjectPipe } 
-  from './convert-string-to-date-object.pipe';
+import { ConvertStringToDateObjectPipe
+} from './convert-string-to-date-object.pipe';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
