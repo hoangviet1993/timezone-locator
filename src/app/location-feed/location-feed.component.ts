@@ -48,6 +48,10 @@ export class LocationFeedComponent implements OnInit {
           this.userGMTOffset = this.calculateGMTTimezone(
             currentLocation.gmtOffset);
           this.isSuccessful = true;
+          setInterval(() => {
+            this.userTime.setSeconds(this.userTime.getSeconds() + 1);
+            this.userTime = new Date(this.userTime);
+          }, 1000);
         } else if (response.status === this.TIMEZONEDB_FAIL_STATUS) {
           if (response.message === this.TIMEZONEDB_INVALID_LATITUDE_MESSAGE ||
             response.message === this.TIMEZONEDB_INVALID_LONGITUDE_MESSAGE) {
@@ -97,7 +101,7 @@ export class LocationFeedComponent implements OnInit {
       if (gmtOffsetValue > 0) {
         GMTTimezone = '(GMT+' + gmtOffsetValue.toString() + ')';
       } else if (gmtOffsetValue < 0) {
-        GMTTimezone = '(GMT-' + gmtOffsetValue.toString() + ')';
+        GMTTimezone = '(GMT' + gmtOffsetValue.toString() + ')';
       } else if (gmtOffsetValue === 0) {
         GMTTimezone = '(GMT0)';
       }
